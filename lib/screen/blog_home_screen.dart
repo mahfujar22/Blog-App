@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../provider/services.dart';
+import 'package:http/http.dart' as http;
 import '../model/product_model.dart';
+import 'details_screen.dart';
 
 class BlogHomeScreen extends StatefulWidget {
   const BlogHomeScreen({super.key});
@@ -11,12 +12,12 @@ class BlogHomeScreen extends StatefulWidget {
 }
 
 class _BlogHomeScreenState extends State<BlogHomeScreen> {
-  late Future<List<Posts>> _futurePosts;
+  late Future<List<Posts>> futurePosts;
 
   @override
   void initState() {
     super.initState();
-    _futurePosts = AuthProvider.fetchProducts();
+    futurePosts = fetchProducts();
   }
 
   @override
@@ -41,111 +42,85 @@ class _BlogHomeScreenState extends State<BlogHomeScreen> {
           ),
         ],
       ),
+
       body: FutureBuilder<List<Posts>>(
-        future: _futurePosts,
+        future: futurePosts,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: Colors.white));
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
             return Center(
               child: Text(
-                'Error loading posts:\n${snapshot.error}',
+                'Error: ${snapshot.error}',
                 style: const TextStyle(color: Colors.white),
-                textAlign: TextAlign.center,
               ),
             );
           }
 
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
-              child: Text('No posts found', style: TextStyle(color: Colors.white)),
-            );
-          }
-
           final posts = snapshot.data!;
+
           return ListView.builder(
-            padding: const EdgeInsets.all(12),
             itemCount: posts.length,
             itemBuilder: (context, index) {
               final post = posts[index];
 
-              return Card(
-                color: const Color(0xFF1C1C25),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
-                elevation: 4.sp,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(12),
-                  onTap: () {},
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (post.featuredImage != null && post.featuredImage!.isNotEmpty)
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              post.featuredImage!,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: 180.h,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  height: 180.h,
-                                  color: Colors.grey[800],
-                                  child: const Center(
-                                    child: Icon(Icons.broken_image, color: Colors.white),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        SizedBox(height: 12.h),
-                        Text(
-                          post.title ?? "No Title",
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          post.excerpt ?? "No description available",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.8),
-                            fontSize: 14.sp,
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-                        Row(
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => DetailsScreen(post: post),
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1A1A1E),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (post.author?.avatar != null)
-                              CircleAvatar(
-                                radius: 15.sp,
-                                backgroundImage: NetworkImage(post.author!.avatar!),
+                            Text(
+                              post.title ?? "No Title",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                            SizedBox(width: 8.h),
-                            Text(
-                              post.author?.name ?? "Unknown",
-                              style: TextStyle(color: Colors.white.withOpacity(0.9)),
                             ),
-                            const Spacer(),
-                            Icon(Icons.timer, color: Colors.white70, size: 16.sp),
-                            SizedBox(width: 4.h),
+                           SizedBox(height: 6),
                             Text(
-                              "${post.readTime ?? 0} min read",
-                              style: const TextStyle(color: Colors.white70, fontSize: 12),
+                              post.excerpt ?? "",
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 14,
+                              ),
                             ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                     SizedBox(width: 12),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          post.featuredImage ?? "",
+                          width: 85,
+                          height: 85,
+                          fit: BoxFit.cover
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -154,5 +129,25 @@ class _BlogHomeScreenState extends State<BlogHomeScreen> {
         },
       ),
     );
+  }
+}
+
+String baseUrl = "https://api.zhndev.site/wp-json/blog-app/v1/posts";
+
+Future<List<Posts>> fetchProducts() async {
+  try {
+    final response = await http.get(Uri.parse(baseUrl));
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+
+      Product product = Product.fromJson(jsonData);
+
+      return product.data?.posts ?? [];
+    } else {
+      throw Exception("Failed to load data: ${response.statusCode}");
+    }
+  } catch (e) {
+    throw Exception("Error: $e");
   }
 }

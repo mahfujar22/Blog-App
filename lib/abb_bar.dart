@@ -14,6 +14,7 @@ class BlogApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             inputDecorationTheme: InputDecorationThemeData(
               hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),

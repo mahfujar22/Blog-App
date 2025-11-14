@@ -16,7 +16,9 @@ class _UpDatePasswordState extends State<UpDatePassword> {
       appBar: AppBar(
         backgroundColor: Color(0xFF121217),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: Text(

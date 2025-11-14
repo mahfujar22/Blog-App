@@ -1,3 +1,5 @@
+import 'package:http/http.dart';
+
 class Product {
   bool? _success;
   String? _message;
@@ -97,6 +99,8 @@ class Posts {
   bool? _isLiked;
   bool? _isBookmarked;
 
+
+
   Posts(
       {int? id,
         String? title,
@@ -191,17 +195,34 @@ class Posts {
     _excerpt = json['excerpt'];
     _content = json['content'];
     _featuredImage = json['featured_image'];
-    _author =
-    json['author'] != null ? new Author.fromJson(json['author']) : null;
-    _categories = json['categories'].cast<String>();
+
+    _author = json['author'] != null
+        ? Author.fromJson(json['author'])
+        : null;
+
+    if (json['categories'] != null) {
+      _categories = [];
+      json['categories'].forEach((cat) {
+        if (cat is Map && cat.containsKey('name')) {
+          _categories!.add(cat['name']);
+        } else {
+          _categories!.add(cat.toString());
+        }
+      });
+    }
+
     _readTime = json['read_time'];
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
-    _likeCount = json['like_count'];
-    _commentCount = json['comment_count'];
-    _isLiked = json['is_liked'];
-    _isBookmarked = json['is_bookmarked'];
+
+    _likeCount = json['like_count']?.toString();
+    _commentCount = json['comment_count']?.toString();
+
+    _isLiked = json['is_liked'] == 1 || json['is_liked'] == true;
+    _isBookmarked = json['is_bookmarked'] == 1 || json['is_bookmarked'] == true;
   }
+
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
