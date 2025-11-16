@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/provider/services.dart';
 import 'package:project/screen/register_screen.dart';
 import 'package:provider/provider.dart';
-import '../provider/services.dart';
 import 'bottom_nav_bar_screen.dart';
 
 class LogInScreen extends StatefulWidget {
@@ -21,8 +21,8 @@ class _LogInScreenState extends State<LogInScreen> {
   @override
   void initState() {
     super.initState();
-    _emailTEController.text = 'mahfuj4212@gmail.com' ;
-    _passwordTEController.text = '1234567890';
+    _emailTEController.text = 'mahfujar28@gmail.com' ;
+    _passwordTEController.text = '12345678900';
 
   }
 
@@ -74,7 +74,7 @@ class _LogInScreenState extends State<LogInScreen> {
               ),
               SizedBox(height: 24.h),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0).w,
                 child: SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -118,11 +118,11 @@ class _LogInScreenState extends State<LogInScreen> {
                       }
                     },
                     child: authProvider.isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text(
+                        ?  CircularProgressIndicator(color: Colors.white)
+                        :  Text(
                       'Login',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
+                          fontWeight: FontWeight.bold, fontSize: 18.sp),
                     ),
                   ),
                 ),

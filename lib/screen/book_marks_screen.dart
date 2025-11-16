@@ -1,119 +1,114 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:http/http.dart' as http;
+import 'package:project/model/post_model.dart';
+import 'package:project/provider/services.dart';
 
-import '../model/product_model.dart';
 
-class BookMarksScreen extends StatefulWidget {
-  const BookMarksScreen({super.key});
+class BookMarkScreen extends StatefulWidget {
+  const BookMarkScreen({super.key});
 
   @override
-  State<BookMarksScreen> createState() => _BookMarksScreenState();
+  State<BookMarkScreen> createState() => _BookMarkScreenState();
 }
 
-class _BookMarksScreenState extends State<BookMarksScreen> {
-  final TextEditingController _searchBarTEController = TextEditingController();
+class _BookMarkScreenState extends State<BookMarkScreen> {
+  final authProvider = AuthProvider();
 
-  List<Product> _allProducts = [];
-  List<Product> _filteredProducts = [];
+  List<Posts> allPosts = [];
+  List<Posts> filteredPosts = [];
 
-  /*
-  void _filterProducts(String query) {
-    final lowerQuery = query.toLowerCase();
-    setState(() {
-      _filteredProducts = _allProducts
-          .where((p) => p.title.toLowerCase().contains(lowerQuery))
-          .toList();
-    });
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
   }
 
-
-  void _updateProduct(Product updated) {
-    final iAll = _allProducts.indexWhere((p) => p.id == updated.id);
-    if (iAll != -1) _allProducts[iAll] = updated;
-
-    final iFiltered = _filteredProducts.indexWhere((p) => p.id == updated.id);
-    if (iFiltered != -1) _filteredProducts[iFiltered] = updated;
+  void loadData() async {
+    allPosts = await authProvider.fetchPosts();
+    filteredPosts = allPosts;
+    setState(() => loading = false);
   }
-*/
+
+  void searchPosts(String text) {
+    text = text.toLowerCase();
+    filteredPosts = allPosts.where((post) {
+      return (post.title ?? "").toLowerCase().contains(text) ||
+          (post.content ?? "").toLowerCase().contains(text);
+    }).toList();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    final products = _filteredProducts;
     return Scaffold(
       backgroundColor: const Color(0xFF121217),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF121217),
-        title: Text(
-          'BookMarks',
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+          backgroundColor: const Color(0xFF121217),
+          title: const Text("Books", style: const TextStyle(color: Colors.white),),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: Column(
-          children: [
-            TextField(
-              controller: _searchBarTEController,
-              style: TextStyle(color: Colors.white),
+      body: loading
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextField(
+              onChanged: searchPosts,
               decoration: InputDecoration(
-                hintText: 'Search BookMark',
-                prefixIcon: const Icon(Icons.search),
+                hintText: "Search...",
+                hintStyle: TextStyle(color: Colors.white70),
+                fillColor: Colors.white70,
                 filled: true,
-                fillColor: Colors.grey,
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
-            SizedBox(height: 25.h),
-          ],
-        ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredPosts.length,
+              itemBuilder: (context, index) {
+                final p = filteredPosts[index];
+                return Card(
+                  color: const Color(0xFF1A1A1E),
+                  margin: const EdgeInsets.all(8),
+                  child: ListTile(
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        p.featuredImage ?? "",
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    title: Text(p.title ?? "",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(
+                      p.content ?? "",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
 }
-
-Future<void> SearchItem() async {
-  final url = "https://api.zhndev.site/wp-json/blog-app/v1/posts/132";
-  final response = await http.get(Uri.parse(url));
-
-  if (response.statusCode == 200) {
-    final data = jsonDecode(response.body);
-    print('SearchItem Successfully');
-    return data;
-  } else {
-    throw 'SearchItem filed';
-  }
-}
-
-/*body: Column(
-        children: [
-          SizedBox(height: 30),
-          TextField(
-            controller: _searchBarTEController,
-            style:  TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-                hintText: 'Search BookMark',
-              prefixIcon: const Icon(Icons.search),
-              filled: true,
-              fillColor: Colors.grey,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
-              ),
-
-            ),
-           // onChanged: _filterProducts ,
-
-          ),
-        ],
-      ),*/

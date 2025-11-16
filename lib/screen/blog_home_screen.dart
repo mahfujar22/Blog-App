@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
-import '../model/product_model.dart';
+import 'package:project/model/product_model.dart';
 import 'details_screen.dart';
 
 class BlogHomeScreen extends StatefulWidget {
@@ -26,11 +27,11 @@ class _BlogHomeScreenState extends State<BlogHomeScreen> {
       backgroundColor: const Color(0xFF121217),
       appBar: AppBar(
         backgroundColor: const Color(0xFF121217),
-        title: const Text(
+        title: Text(
           'Blog',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 20.sp,
             color: Colors.white,
           ),
         ),
@@ -76,8 +77,8 @@ class _BlogHomeScreenState extends State<BlogHomeScreen> {
                   );
                 },
                 child: Container(
-                  margin: const EdgeInsets.all(12),
-                  padding: const EdgeInsets.all(14),
+                  margin: EdgeInsets.all(12).w,
+                  padding:  EdgeInsets.all(14).w,
                   decoration: BoxDecoration(
                     color: const Color(0xFF1A1A1E),
                     borderRadius: BorderRadius.circular(14),

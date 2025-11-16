@@ -15,7 +15,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   int selectedIndex = 0;
   List<Widget> _screen = [
     BlogHomeScreen(),
-    BookMarksScreen(),
+    BookMarkScreen(),
     ProfileScreen(),
   ];
 

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/screen/up_date_password.dart';
 import 'package:project/screen/up_date_profile_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/services.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -11,11 +14,28 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+      if (authProvider.token != null && authProvider.data == null) {
+        await authProvider.fetchProfile();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final profileData = authProvider.data;
+    final user = profileData?['user'];
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF121217),
+        backgroundColor: const Color(0xFF121217),
         title: Text(
           "Profile",
           style: TextStyle(
@@ -28,26 +48,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.settings, color: Colors.white),
+            icon: const Icon(Icons.settings, color: Colors.white),
           ),
         ],
       ),
-      backgroundColor: Color(0xFF121217),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+
+      backgroundColor: const Color(0xFF121217),
+
+      body: authProvider.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : user == null
+          ? const Center(
+        child: Text(
+          'No profile data found. Please log in',
+          style: TextStyle(color: Colors.white),
+        ),
+      )
+          : SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 50),
-            Center(
-              child: CircleAvatar(
-                radius: 70,
-                backgroundImage: AssetImage("assets/images/mahfujar.png"),
-                backgroundColor: Colors.transparent,
+            SizedBox(height: 30.h),
+            const CircleAvatar(
+              radius: 70,
+              backgroundImage:
+              AssetImage("assets/images/mahfujar.png"),
+            ),
+            SizedBox(height: 20.h),
+            Text(
+              user['name'] ?? "Unknown User",
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
-            SizedBox(height: 100),
+            SizedBox(height: 10.h),
+            Text(
+              user['email'] ?? "Unknown Email",
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.white70,
+              ),
+            ),
+            SizedBox(height: 40.h),
             ListTile(
               onTap: () {
                 Navigator.push(
@@ -57,98 +100,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 );
               },
-              leading: Icon(Icons.edit, color: Colors.white),
-              title: Text(
+              leading:
+              const Icon(Icons.edit, color: Colors.white, size: 28),
+              title: const Text(
                 "Edit Profile",
                 style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.brown,
                 ),
               ),
-              trailing: Icon(
-                Icons.arrow_forward_ios_outlined,
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 10.h),
             ListTile(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UpDatePassword()),
+                  MaterialPageRoute(
+                      builder: (context) => UpDatePassword()),
                 );
               },
-              leading: Icon(Icons.lock, color: Colors.white),
-              title: Text(
+              leading:
+              const Icon(Icons.lock, color: Colors.white, size: 28),
+              title: const Text(
                 "Change Password",
                 style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.brown,
                 ),
               ),
-              trailing: Icon(
-                Icons.arrow_forward_ios_outlined,
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
                 color: Colors.white,
               ),
             ),
+            SizedBox(height: 20.h),
           ],
         ),
       ),
     );
   }
 }
-
-// SizedBox(height: 70),
-// Row(
-//   mainAxisAlignment: MainAxisAlignment.start,
-//   children: [
-//     Container(
-//       height: 40,
-//       width: 40,
-//       decoration: BoxDecoration(
-//         color: Colors.grey,
-//         borderRadius: BorderRadius.circular(12),
-//       ),
-//       child: Icon(Icons.edit, color: Colors.white70, size: 30),
-//     ),
-//     TextButton(
-//       onPressed: () {},
-//       child: Text(
-//         'Edit Profile',
-//         style: TextStyle(
-//           fontWeight: FontWeight.w400,
-//           fontSize: 18,
-//           color: Colors.white70,
-//         ),
-//       ),
-//     ),
-//   ],
-// ),
-
-// Row(
-//   mainAxisAlignment: MainAxisAlignment.start,
-//   children: [
-//     Container(
-//       height: 40,
-//       width: 40,
-//       decoration: BoxDecoration(
-//         color: Colors.grey,
-//         borderRadius: BorderRadius.circular(12),
-//       ),
-//       child: Icon(Icons.edit, color: Colors.white70, size: 30),
-//     ),
-//     TextButton(
-//       onPressed: () {},
-//       child: Text(
-//         'Update Password',
-//         style: TextStyle(
-//           fontWeight: FontWeight.w400,
-//           fontSize: 18,
-//           color: Colors.white70,
-//         ),
-//       ),
-//     ),
-//   ],
-// ),
