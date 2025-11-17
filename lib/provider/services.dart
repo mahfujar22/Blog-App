@@ -181,7 +181,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-
   // ---------- FETCH COMMENTS ----------
   Future<List<CommentModel>> fetchComments(int postId) async {
     final url = Uri.parse(
@@ -307,6 +306,35 @@ class AuthProvider extends ChangeNotifier {
       throw Exception("Failed to load posts");
     }
   }
+
+
+
+
+  Future<Map<String, dynamic>> changePassword(
+      String currentPass, String newPass) async {
+
+    final url = Uri.parse("https://api.zhndev.site/wp-json/blog-app/v1/user/change-password");
+
+    final body = {
+      "current_password": currentPass,
+      "new_password": newPass,
+    };
+
+    final response = await http.post(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $_token",
+      },
+      body: jsonEncode(body),
+    );
+
+    print("CHANGE PASSWORD STATUS: ${response.statusCode}");
+    print("CHANGE PASSWORD BODY: ${response.body}");
+
+    return jsonDecode(response.body);
+  }
+
 
 
 }

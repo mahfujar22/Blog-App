@@ -14,7 +14,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -35,11 +34,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 80.h,
         backgroundColor: const Color(0xFF121217),
         title: Text(
           "Profile",
           style: TextStyle(
-            fontSize: 22.sp,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -50,98 +50,108 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () {},
             icon: const Icon(Icons.settings, color: Colors.white),
           ),
+          SizedBox(width: 10.w),
         ],
       ),
 
       backgroundColor: const Color(0xFF121217),
 
-      body: authProvider.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : user == null
-          ? const Center(
-        child: Text(
-          'No profile data found. Please log in',
-          style: TextStyle(color: Colors.white),
-        ),
-      )
-          : SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 30.h),
-            const CircleAvatar(
-              radius: 70,
-              backgroundImage:
-              AssetImage("assets/images/mahfujar.png"),
-            ),
-            SizedBox(height: 20.h),
-            Text(
-              user['name'] ?? "Unknown User",
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(height: 10.h),
-            Text(
-              user['email'] ?? "Unknown Email",
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white70,
-              ),
-            ),
-            SizedBox(height: 40.h),
-            ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UpDateProfileScreen(),
-                  ),
-                );
-              },
-              leading:
-              const Icon(Icons.edit, color: Colors.white, size: 28),
-              title: const Text(
-                "Edit Profile",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown,
+      body: SingleChildScrollView(
+        child: authProvider.isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : user == null
+            ? const Center(
+                child: Text(
+                  'No profile data found. Please log in',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+            : Padding(
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  children: [
+                    SizedBox(height: 30.h),
+                    const CircleAvatar(
+                      radius: 70,
+                      backgroundImage: AssetImage("assets/images/mahfujar.png"),
+                    ),
+                    SizedBox(height: 20.h),
+                    Text(
+                      user['name'] ?? "Unknown User",
+                      style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Text(
+                      user['email'] ?? "Unknown Email",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white70,
+                      ),
+                    ),
+                    SizedBox(height: 40.h),
+                    ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpDateProfileScreen(),
+                          ),
+                        );
+                      },
+                      leading: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 30.r,
+                      ),
+                      title: Text(
+                        "Edit Profile",
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.brown,
+                        ),
+                      ),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpDatePassword(),
+                          ),
+                        );
+                      },
+                      leading: Icon(
+                        Icons.lock,
+                        color: Colors.white,
+                        size: 30.r,
+                      ),
+                      title: Text(
+                        "Change Password",
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.brown,
+                        ),
+                      ),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                  ],
                 ),
               ),
-              trailing: const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(height: 10.h),
-            ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UpDatePassword()),
-                );
-              },
-              leading:
-              const Icon(Icons.lock, color: Colors.white, size: 28),
-              title: const Text(
-                "Change Password",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown,
-                ),
-              ),
-              trailing: const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(height: 20.h),
-          ],
-        ),
       ),
     );
   }

@@ -26,12 +26,13 @@ class _BlogHomeScreenState extends State<BlogHomeScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF121217),
       appBar: AppBar(
+        toolbarHeight: 80.h,
         backgroundColor: const Color(0xFF121217),
         title: Text(
           'Blog',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20.sp,
+            fontSize: 18.sp,
             color: Colors.white,
           ),
         ),
@@ -41,6 +42,7 @@ class _BlogHomeScreenState extends State<BlogHomeScreen> {
             onPressed: () {},
             icon: const Icon(Icons.search, color: Colors.white, size: 30),
           ),
+          SizedBox(width: 16.w),
         ],
       ),
 
@@ -77,8 +79,8 @@ class _BlogHomeScreenState extends State<BlogHomeScreen> {
                   );
                 },
                 child: Container(
-                  margin: EdgeInsets.all(12).w,
-                  padding:  EdgeInsets.all(14).w,
+                  margin: EdgeInsets.all(8).w,
+                  padding: EdgeInsets.all(8).w,
                   decoration: BoxDecoration(
                     color: const Color(0xFF1A1A1E),
                     borderRadius: BorderRadius.circular(14),
@@ -92,33 +94,33 @@ class _BlogHomeScreenState extends State<BlogHomeScreen> {
                           children: [
                             Text(
                               post.title ?? "No Title",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                           SizedBox(height: 6),
+                            SizedBox(height: 4.h),
                             Text(
                               post.excerpt ?? "",
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white70,
-                                fontSize: 14,
+                                fontSize: 14.sp,
                               ),
                             ),
                           ],
                         ),
                       ),
-                     SizedBox(width: 12),
+                      SizedBox(width: 12.w),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.network(
                           post.featuredImage ?? "",
-                          width: 85,
-                          height: 85,
-                          fit: BoxFit.cover
+                          width: 90.w,
+                          height: 90.h,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ],

@@ -1,12 +1,9 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/model/comments_model.dart';
 import 'package:project/model/product_model.dart';
 import 'package:project/provider/services.dart';
 import 'package:provider/provider.dart';
-
-
-
 
 class DetailsScreen extends StatefulWidget {
   final Posts post;
@@ -24,11 +21,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
   bool loading = true;
   final TextEditingController commentController = TextEditingController();
 
-
   int likesCount = 0;
   bool likedByUser = false;
   bool loadingLikes = true;
-
 
   @override
   void initState() {
@@ -38,7 +33,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
       authProvider = Provider.of<AuthProvider>(context, listen: false);
       loadComments();
       loadLikes();
-
     });
   }
 
@@ -93,10 +87,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
         backgroundColor: Color(0xFF121217),
         actions: [
           IconButton(
-            onPressed: (){},
-            icon: Icon(Icons.bookmark_add_outlined,color: Colors.white,size: 30,),
+            onPressed: () {},
+            icon: Icon(
+              Icons.bookmark_add_outlined,
+              color: Colors.white,
+              size: 30.sp,
+            ),
           ),
-          SizedBox(width: 16),
+          SizedBox(width: 16.w),
         ],
       ),
 
@@ -105,7 +103,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 250,
+              height: 250.h,
               width: double.infinity,
               child: Image.network(
                 widget.post.featuredImage ?? "",
@@ -113,28 +111,29 @@ class _DetailsScreenState extends State<DetailsScreen> {
               ),
             ),
 
-            SizedBox(height: 16),
+            SizedBox(height: 16.h),
 
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Text(
                 widget.post.title ?? "",
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
 
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16).w,
               child: Text(
                 widget.post.content ?? "",
-                style: TextStyle(color: Colors.white70, fontSize: 16),
+                style: TextStyle(color: Colors.white70, fontSize: 16.sp),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Row(
               children: [
                 Stack(
@@ -153,7 +152,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         right: 0,
                         top: 8,
                         child: Container(
-                          padding: EdgeInsets.all(4),
+                          padding: EdgeInsets.all(4).w,
                           decoration: BoxDecoration(
                             color: Colors.orange,
                             shape: BoxShape.circle,
@@ -166,7 +165,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ),
                   ],
                 ),
-                SizedBox(width: 20),
+                SizedBox(width: 20.w),
                 Stack(
                   alignment: Alignment.center,
                   children: [
@@ -175,9 +174,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       right: 0,
                       top: 8,
                       child: Container(
-                        padding: EdgeInsets.all(4),
+                        padding: EdgeInsets.all(4).w,
                         decoration: BoxDecoration(
-                            color: Colors.orange, shape: BoxShape.circle),
+                          color: Colors.orange,
+                          shape: BoxShape.circle,
+                        ),
                         child: Text(
                           comments.length.toString(),
                           style: TextStyle(color: Colors.black, fontSize: 12),
@@ -189,39 +190,46 @@ class _DetailsScreenState extends State<DetailsScreen> {
               ],
             ),
 
-            SizedBox(height: 30),
+            SizedBox(height: 30.h),
 
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text("Comments",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold)),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Text(
+                "Comments",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
 
-            SizedBox(height: 10),
+            SizedBox(height: 10.h),
 
             loading
-                ? Center(
-                child: CircularProgressIndicator(color: Colors.orange))
+                ? Center(child: CircularProgressIndicator(color: Colors.orange))
                 : ListView.builder(
-              itemCount: comments.length,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (_, index) {
-                final c = comments[index];
-                return ListTile(
-                  leading: CircleAvatar(child: Icon(Icons.person)),
-                  title: Text(c.user, style: TextStyle(color: Colors.white)),
-                  subtitle:
-                  Text(c.comment, style: TextStyle(color: Colors.white70)),
-                );
-              },
-            ),
-            SizedBox(height: 20),
+                    itemCount: comments.length,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, index) {
+                      final c = comments[index];
+                      return ListTile(
+                        leading: CircleAvatar(child: Icon(Icons.person)),
+                        title: Text(
+                          c.user,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        subtitle: Text(
+                          c.comment,
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                      );
+                    },
+                  ),
+            SizedBox(height: 20.h),
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(16.w),
               child: Row(
                 children: [
                   Expanded(
@@ -233,16 +241,17 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         filled: true,
                         fillColor: Colors.black26,
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: 10.w),
                   IconButton(
                     onPressed: submitComment,
                     icon: Icon(Icons.send, color: Colors.orange, size: 28),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -252,7 +261,3 @@ class _DetailsScreenState extends State<DetailsScreen> {
     );
   }
 }
-
-
-
-

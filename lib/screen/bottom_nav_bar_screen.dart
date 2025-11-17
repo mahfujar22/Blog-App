@@ -13,18 +13,14 @@ class BottomNavBarScreen extends StatefulWidget {
 
 class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   int selectedIndex = 0;
-  List<Widget> _screen = [
-    BlogHomeScreen(),
-    BookMarkScreen(),
-    ProfileScreen(),
-  ];
+  List<Widget> _screen = [BlogHomeScreen(), BookMarkScreen(), ProfileScreen()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screen[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black26,
+        backgroundColor: Color(0xFF1C1F26),
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.brown,
         currentIndex: selectedIndex,

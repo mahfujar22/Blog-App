@@ -27,9 +27,9 @@ class BlogApp extends StatelessWidget {
             ),
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
-                minimumSize: const Size(350, 60),
+                minimumSize: Size(double.infinity, 50),
                 backgroundColor: const Color(0xFFEA7A3A),
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

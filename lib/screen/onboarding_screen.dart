@@ -36,7 +36,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       'Welcome to Your Personal\nBlog Space',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 25.sp,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
@@ -47,7 +47,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.85),
-                        fontSize: 13.sp,
+                        fontSize: 12.sp,
                         height: 1.35.h,
                         fontWeight: FontWeight.w400,
                       ),
@@ -65,7 +65,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       child: Text(
                         'Get Started',
                         style: TextStyle(
-                          fontSize: 16.sp,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w700,
                         ),
                       ),

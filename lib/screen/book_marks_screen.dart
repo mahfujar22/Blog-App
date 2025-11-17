@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project/model/post_model.dart';
 import 'package:project/provider/services.dart';
-
 
 class BookMarkScreen extends StatefulWidget {
   const BookMarkScreen({super.key});
@@ -44,71 +44,76 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF121217),
       appBar: AppBar(
-          backgroundColor: const Color(0xFF121217),
-          title: const Text("Books", style: const TextStyle(color: Colors.white),),
+        toolbarHeight: 80.h,
+        backgroundColor: const Color(0xFF121217),
+        title: Text(
+          "Books",
+          style: TextStyle(color: Colors.white, fontSize: 16.sp),
+        ),
         centerTitle: true,
       ),
       body: loading
           ? const Center(child: CircularProgressIndicator())
           : Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              onChanged: searchPosts,
-              decoration: InputDecoration(
-                hintText: "Search...",
-                hintStyle: TextStyle(color: Colors.white70),
-                fillColor: Colors.white70,
-                filled: true,
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredPosts.length,
-              itemBuilder: (context, index) {
-                final p = filteredPosts[index];
-                return Card(
-                  color: const Color(0xFF1A1A1E),
-                  margin: const EdgeInsets.all(8),
-                  child: ListTile(
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        p.featuredImage ?? "",
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    title: Text(p.title ?? "",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      p.content ?? "",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: TextField(
+                    onChanged: searchPosts,
+                    decoration: InputDecoration(
+                      hintText: "Search...",
+                      hintStyle: TextStyle(color: Colors.white70),
+                      fillColor: Colors.white70,
+                      filled: true,
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10).r,
                       ),
                     ),
                   ),
-                );
-              },
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: filteredPosts.length,
+                    itemBuilder: (context, index) {
+                      final p = filteredPosts[index];
+                      return Card(
+                        color: const Color(0xFF1A1A1E),
+                        margin: EdgeInsets.all(8).w,
+                        child: ListTile(
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              p.featuredImage ?? "",
+                              width: 60.w,
+                              height: 60.h,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          title: Text(
+                            p.title ?? "",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Text(
+                            p.content ?? "",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

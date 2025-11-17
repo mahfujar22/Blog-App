@@ -25,6 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF121217),
       appBar: AppBar(
+        toolbarHeight: 80.h,
         backgroundColor: const Color(0xFF121217),
         title: Text(
           'Create Account',
@@ -37,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.all(16.w),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,63 +102,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: 24.h),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: authProvider.isLoading
-                        ? null
-                        : () async {
-                      final name = _nameTEController.text.trim();
-                      final email = _emailTEController.text.trim();
-                      final password =
-                      _passwordTEController.text.trim();
-                      final phone = _phoneTEController.text.trim();
+                padding: EdgeInsets.all(8.0).w,
+                child: ElevatedButton(
+                  onPressed: authProvider.isLoading
+                      ? null
+                      : () async {
+                          final name = _nameTEController.text.trim();
+                          final email = _emailTEController.text.trim();
+                          final password = _passwordTEController.text.trim();
+                          final phone = _phoneTEController.text.trim();
 
-                      if (name.isEmpty ||
-                          email.isEmpty ||
-                          password.isEmpty ||
-                          phone.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Please fill all fields"),
+                          if (name.isEmpty ||
+                              email.isEmpty ||
+                              password.isEmpty ||
+                              phone.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Please fill all fields"),
+                              ),
+                            );
+                            return;
+                          }
+
+                          bool success = await authProvider.signUp(
+                            name,
+                            email,
+                            password,
+                            phone,
+                          );
+
+                          if (success) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Register Successful"),
+                              ),
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const LogInScreen(),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Register Failed")),
+                            );
+                          }
+                        },
+                  child: authProvider.isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                          'Register',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.sp,
                           ),
-                        );
-                        return;
-                      }
-
-                      bool success = await authProvider.signUp(
-                          name, email, password, phone);
-
-                      if (success) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text("Register Successful")),
-                        );
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const LogInScreen(),
-                          ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text("Register Failed")),
-                        );
-                      }
-                    },
-                    child: authProvider.isLoading
-                        ? const CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                        : const Text(
-                      'Register',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                  ),
+                        ),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -166,9 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                        builder: (_) => const LogInScreen(),
-                      ),
+                      MaterialPageRoute(builder: (_) => const LogInScreen()),
                     );
                   },
                   child: const Text(

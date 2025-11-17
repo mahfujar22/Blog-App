@@ -1,6 +1,5 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/services.dart';
@@ -20,12 +19,10 @@ class _UpDateProfileScreenState extends State<UpDateProfileScreen> {
   void initState() {
     super.initState();
     final auth = Provider.of<AuthProvider>(context, listen: false);
-
     print("==== INIT PROFILE DATA ====");
     print("AUTH DATA = ${auth.data}");
 
     final user = auth.data?['user'];
-
     print("USER DATA = $user");
 
     nameController.text = user?['name'] ?? "";
@@ -39,6 +36,7 @@ class _UpDateProfileScreenState extends State<UpDateProfileScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF121217),
       appBar: AppBar(
+        toolbarHeight: 80.h,
         backgroundColor: const Color(0xFF121217),
         leading: IconButton(
           onPressed: () {
@@ -47,24 +45,24 @@ class _UpDateProfileScreenState extends State<UpDateProfileScreen> {
           },
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
-        title: const Text(
+        title: Text(
           "Update Profile",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 18.sp),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
-            const SizedBox(height: 40),
+            SizedBox(height: 40.h),
 
-            const CircleAvatar(
-              radius: 60,
+            CircleAvatar(
+              radius: 60.r,
               backgroundImage: AssetImage("assets/images/mahfujar.png"),
             ),
 
-            const SizedBox(height: 40),
+            SizedBox(height: 40.h),
 
             TextField(
               controller: nameController,
@@ -75,7 +73,7 @@ class _UpDateProfileScreenState extends State<UpDateProfileScreen> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
 
             TextField(
               controller: phoneController,
@@ -86,40 +84,40 @@ class _UpDateProfileScreenState extends State<UpDateProfileScreen> {
               ),
             ),
 
-            const SizedBox(height: 40),
+            SizedBox(height: 40.h),
 
             auth.isLoading
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
-              onPressed: () async {
-                print("==== UPDATE BUTTON PRESSED ====");
-                print("NAME = ${nameController.text}");
-                print("PHONE = ${phoneController.text}");
+                    onPressed: () async {
+                      print("==== UPDATE BUTTON PRESSED ====");
+                      print("NAME = ${nameController.text}");
+                      print("PHONE = ${phoneController.text}");
 
-                bool success = await auth.updateProfile(
-                  name: nameController.text.trim(),
-                  phone: phoneController.text.trim(),
-                );
+                      bool success = await auth.updateProfile(
+                        name: nameController.text.trim(),
+                        phone: phoneController.text.trim(),
+                      );
 
-                if (success) {
-                  print("SUCCESS! Profile Updated.");
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Profile updated successfully!"),
-                    ),
-                  );
-                  Navigator.pop(context);
-                } else {
-                  print("FAILED! Profile Not Updated.");
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Failed to update profile."),
-                    ),
-                  );
-                }
-              },
-              child: const Text("Save Changes"),
-            ),
+                      if (success) {
+                        print("SUCCESS! Profile Updated.");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Profile updated successfully!"),
+                          ),
+                        );
+                        Navigator.pop(context);
+                      } else {
+                        print("FAILED! Profile Not Updated.");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Failed to update profile."),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text("Save Changes"),
+                  ),
           ],
         ),
       ),
