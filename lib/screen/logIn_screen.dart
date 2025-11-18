@@ -18,13 +18,6 @@ class _LogInScreenState extends State<LogInScreen> {
   bool _obscureText = true;
 
   @override
-  void initState() {
-    super.initState();
-    _emailTEController.text = 'mahfujar28@gmail.com';
-    _passwordTEController.text = '12345678900';
-  }
-
-  @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(

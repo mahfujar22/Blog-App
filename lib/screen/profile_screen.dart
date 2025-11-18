@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project/screen/logIn_screen.dart';
 import 'package:project/screen/up_date_password.dart';
 import 'package:project/screen/up_date_profile_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../provider/services.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -36,6 +36,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         toolbarHeight: 80.h,
         backgroundColor: const Color(0xFF121217),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LogInScreen()));
+          },
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+        ),
         title: Text(
           "Profile",
           style: TextStyle(
