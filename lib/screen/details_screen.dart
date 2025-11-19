@@ -85,6 +85,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
       appBar: AppBar(
         backgroundColor: Color(0xFF121217),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+        ),
         actions: [
           IconButton(
             onPressed: () {},
