@@ -97,7 +97,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             icon: Icon(
               Icons.bookmark_add_outlined,
               color: Colors.white,
-              size: 30.sp,
+              size: 30,
             ),
           ),
           SizedBox(width: 16.w),
