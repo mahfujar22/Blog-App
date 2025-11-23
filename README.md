@@ -21,7 +21,7 @@ Below are some UI previews from the app:
 
 | Screenshot 3                                            | Screenshot 4                                          |
 |---------------------------------------------------------|-------------------------------------------------------|
-| ![Screen3](assets/images/pages_desings/signUP-page.png) | ![Screen4](assets/images/pages_desings/home-page.png) |
+| ![Screen3](assets/images/pages_desings/signUp-page.png) | ![Screen4](assets/images/pages_desings/home-page.png) |
 
 
 | Screenshot 5                                              | Screenshot 6                                             |
