@@ -334,7 +334,4 @@ class AuthProvider extends ChangeNotifier {
 
     return jsonDecode(response.body);
   }
-
-
-
 }

@@ -72,9 +72,7 @@ class _UpDateProfileScreenState extends State<UpDateProfileScreen> {
                 hintStyle: TextStyle(color: Colors.white54),
               ),
             ),
-
             SizedBox(height: 20.h),
-
             TextField(
               controller: phoneController,
               style: const TextStyle(color: Colors.white),

@@ -93,8 +93,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     SizedBox(height: 10.h),
                     Text(
                       user['email'] ?? "Unknown Email",
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontSize: 16.sp,
                         color: Colors.white70,
                       ),
                     ),
